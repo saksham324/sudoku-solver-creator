@@ -9,10 +9,15 @@ Sudoku is well known logic puzzle where numbers between 1 and 9 are placed on a 
 
 The Sudoku interface with the user is on the command-line; it has two modes `create` and `solve`. 
 
-execute from the command line with usage syntax ```bash 
-./sudoku mode difficulty```, where
+execute from the command line with usage syntax 
+``` 
+./sudoku mode difficulty
+```
+, where
 * "mode" is a string input set to `create` or `solve`. 
 * "difficulty" is a string input set to `easy` or `hard`.
+
+
 
 
 
