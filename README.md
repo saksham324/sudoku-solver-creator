@@ -1,5 +1,5 @@
-# The C Crew
-## Brody, Saksham, Sayuri
+## The C Crew
+## Brody T., Saksham A., Sayuri M. 
 ## CS50 Fall 2021, Final Project - Sudoku 2.0
 
 GitHub usernames: SayuriMagnabosco,
