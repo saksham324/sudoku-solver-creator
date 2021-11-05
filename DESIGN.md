@@ -3,7 +3,7 @@
 ## Authors : Brody T., Saksham A., Sayuri M. 
 ### Sudoku Design Spec 
 
-Sudoku is well known logic puzzle where numbers between 1 and 9 are placed on a 9x9 grid of cells. The placement of numbers has to follow certain rules. There are many variations of Sudoku, but for this project you will start with the most common version of Sudoku. In this version, the 9x9 grid is further divided into 9 square shaped regions of size 3x3 as shown below.
+For this project, we worked as a team to write a set of C programs to create and solve Sudoku puzzles. Sudoku is well known logic puzzle where numbers between 1 and 9 are placed on a 9x9 grid of cells. The placement of numbers has to follow certain rules. There are many variations of Sudoku, but in this version, the 9x9 grid is further divided into 9 square shaped regions of size 3x3.
 
 ### User Interface 
 
@@ -19,6 +19,21 @@ execute from the command line with usage syntax
 
 ### Visual Representation 
 The sudoku puzzle with empty spaces between each cell is displayed in stdout. The sudoku puzzle is represented as 9 numbers seprated by single space in the following format, where zeroes imply empty cells:
+```bash
+-------------------
+|7 8 0|4 0 0|1 2 0|
+|6 0 0|0 7 5|0 0 9|
+|0 0 0|6 0 1|0 7 8|
+-------------------
+|0 0 7|0 4 0|2 6 0|
+|0 0 1|0 5 0|9 3 0|
+|9 0 4|0 6 0|0 0 5|
+-------------------
+|0 7 0|3 0 0|0 1 2|
+|1 2 0|0 0 7|4 0 0|
+|0 4 9|2 0 6|0 0 7|
+-------------------
+```
 
 ### Functional decomposition into modules
 
