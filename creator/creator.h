@@ -1,6 +1,5 @@
 /* 
 * Header file for creator module
-*
 */
 
 #include <stdio.h>
