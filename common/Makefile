@@ -7,7 +7,7 @@
 
 
 # object files, and the target library
-OBJS = common.o
+OBJS = common.o validateInput.o
 LIB = common.a
 
 # (and run `make clean; make` whenever you change this)
@@ -23,6 +23,7 @@ $(LIB): $(OBJS)
 
 # Dependencies: object files depend on header files
 common.o: common.h
+validateInput.o: validateInput.h
 
 .PHONY: clean sourcelist
 

@@ -36,7 +36,6 @@ typedef struct sudoku_board sudoku_board_t; // opaque to users of the module
 * Caller is responsible for:
 *   Later calling delete_board.
 */
-/* see common.h for description */
 sudoku_board_t* generateEmptyBoard(int inputSize);
 
 /**************** delete_board() **************/

@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <common.h>
+#include "common.h"
 #include "../libcs50/mem.h"
 
 /***************** File-local global variables ***************/
@@ -24,11 +24,11 @@
 typedef struct sudoku_board {
     int **boardArray;  // pointer to 2D array 
     int size;          // dimension of the board: size x size (e.g. 9x9)
-} sudoku_board;
+} sudoku_board_t;
 
 /******************** File-local functions *******************/
 /* not visible outside this file */
-bool is_in_row(sudoku_board *board, int row, int value);
+bool is_in_row(sudoku_board_t *board, int row, int value);
 bool is_in_col(sudoku_board_t *board, int column, int value);
 bool is_in_square (sudoku_board_t *board, int row, int column, int value);
 
