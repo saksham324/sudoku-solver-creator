@@ -9,14 +9,14 @@
 /*
  * Solves a passed board and returns whether or not the solution is unique
  * Caller provides:
- *  A valid sudoku_board
+ *  A valid sudoku_board_t
  * We guarantee:
  *  The passed board is solved with one solution or false is returned
  * Caller is responsible for:
  *  Nothing
  */
 
-int *solveBoard(sudoku_board *board); 
+int *solveBoard(sudoku_board_t *board); 
 
 /************ loadBoard ************/
 
@@ -28,9 +28,9 @@ int *solveBoard(sudoku_board *board);
  * Function guarantee:
  *  Returned board is valid or return NULL
  * Caller is responsible for:
- *  Calling deleteBoard on the returned sudoku_board
+ *  Calling deleteBoard on the returned sudoku_board_t
  */
-sudoku_board *loadBoard(FILE *fp);
+sudoku_board_t *loadBoard(FILE *fp);
 
 
 

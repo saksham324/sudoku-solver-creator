@@ -17,12 +17,12 @@
  * Function guarantee:
  *  Returned board is valid or return NULL
  * Caller is responsible for:
- *  Calling deleteBoard on the returned sudoku_board
+ *  Calling deleteBoard on the returned sudoku_board_t
  */
-sudoku_board *loadBoard(FILE *fp) {
+sudoku_board_t *loadBoard(FILE *fp) {
   if (!fp) return NULL;
 
-  sudoku_board *lBoard = generateEmptyBoard(); // generate Empty Board to be filled out 
+  sudoku_board_t *lBoard = generateEmptyBoard(); // generate Empty Board to be filled out 
   if (!lBoard) return NULL;
   
   // make sure number of rows is valid, iterate through each row
