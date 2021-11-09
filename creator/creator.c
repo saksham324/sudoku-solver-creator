@@ -15,7 +15,7 @@ static int getRandNumber(int min, int max) {
  * Removes n numbers from the filled board, and checks if board is still unique. 
  *  
  * Caller provides : 
- *  A valid, filled sudoku_board and a number `n` to remove. 
+ *  A valid, filled sudoku_board_t and a number `n` to remove. 
  * Function guarantees : 
  *  Incomplete board with a unique solution 
  * Return: 
@@ -24,7 +24,7 @@ static int getRandNumber(int min, int max) {
  *  Nothing
  * 
 */
-bool removeNumbers(sudoku_board *b, int n) {
+bool removeNumbers(sudoku_board_t *b, int n) {
   int numRemoved = 0; // set numbers removed to 0 initially 
   int numIterations = 0; // set numIterations to 0 initially
   long int maxChecks = 20000; 
@@ -50,7 +50,7 @@ bool removeNumbers(sudoku_board *b, int n) {
 }
 
 // function to generate random 3x3 grids which are valid 
-void generateRandomGrid(sudoku_board *b, int rowStart, int colStart) {
+void generateRandomGrid(sudoku_board_t *b, int rowStart, int colStart) {
   if (rowStart < 0 || colStart < 0 || b->size < rowStart + 3 || b->size < colStart + 3) return; // make sure rowStart and colStart values are valid
   for (int i = rowStart; i < rowStart + 3; i++) { 
     for (int j = colStart; i < colStart + 3; j++) {
@@ -65,16 +65,16 @@ void generateRandomGrid(sudoku_board *b, int rowStart, int colStart) {
 
 /************ fillBoard ************/
 /*
- * Takes a sudoku_board as input and fills it completely using the solver functionality
+ * Takes a sudoku_board_t as input and fills it completely using the solver functionality
  * 
  * Caller provides:
- *  An empty sudoku_board
+ *  An empty sudoku_board_t
  * Function guarantees:
  *  A board with one solution
  * Caller is responsible for:
  *  Nothing
  */
-bool fillBoard(sudoku_board *b) {
+bool fillBoard(sudoku_board_t *b) {
   // fill diagonal 3x3 grids first, then leverage solveBoard to return a solvedBoard
   generateRandomGrid(b, 0, 0); 
   generateRandomGrid(b, 3, 3); 
