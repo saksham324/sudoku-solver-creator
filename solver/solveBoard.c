@@ -41,7 +41,7 @@ int sovleBoard(int** board, int row, int column, int solutions){ //may need to b
         }
     }
     else{
-
+        return sovleBoard(board, nextRow, nextColumn, solutions);
     }
 
 }
