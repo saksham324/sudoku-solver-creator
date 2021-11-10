@@ -6,7 +6,6 @@
 *
 */ 
 
-
 #ifndef __COMMON_H
 #define __COMMON_H
 
@@ -19,7 +18,10 @@
 #include "../libcs50/mem.h"
 
 /**************** Global types ****************/
-typedef struct sudoku_board sudoku_board_t; // opaque to users of the module
+typedef struct sudoku_board {
+    int **boardArray; // pointer to 2D array
+    int size; // how long each row and column will be (e.g. 9 for 9x9 grid)
+} sudoku_board_t;  // opaque to users of the module
 
 /**************** Functions ****************/
 
@@ -61,7 +63,7 @@ bool delete_board(sudoku_board_t *board);
 */
 void print_board(sudoku_board_t *board);
 
-/**************** is_valid() ***************/
+/**************** isValid() ***************/
 /* Checks if the number we are trying to input is valid. That is, if it
 * does not exist on the row, column, and 3x3 square we are trying to input 
 *
@@ -76,3 +78,50 @@ void print_board(sudoku_board_t *board);
 bool isValid(sudoku_board_t *board, int row, int column, int value);
 
 #endif // __COMMON_H
+
+
+/********* isUnique *************/ 
+
+/* 
+ * Returns whether sudoku_board_t has a unique solution
+ * 
+ * Caller provides: 
+ *  A valid, unfilled sudoku board, a start position (0, 0) originally, the number of solutions
+ * Function guarantees: 
+ *  Returns 0 if no solutions, 1 if board has a unique solution, 2 if board 
+ *  has multiple solutions
+ * Caller is responsible for:
+ *  Calling deleteBoard
+ * 
+ * This function is inspired from : 
+ *  https://stackoverflow.com/a/24343433
+ */
+
+int isUnique(int i, int j, sudoku_board_t *b, int count); 
+
+/************ printBoard ************/
+/*
+ * Prints a given sudoku_board_t to stdout
+ * 
+ * Caller provides:
+ *  A valid pointer to a sudoku_board_t struct
+ * Function guarantee:
+ *  sudoku_board_t is printed to stdout
+ * Caller is responsible for:
+ *  
+ */
+void printBoard(sudoku_board_t *b, FILE *fp);
+
+
+/************ deleteBoard ***********/
+/*
+ * takes a `sudoku_board_t` struct and frees all associated memory
+ * 
+ * Caller provides:
+ *  A valid pointer to a sudoku_board_t struct
+ * Function guarantee:
+ *  All relevant memory is freed
+ * Caller is responsible for:
+ *  Nothing
+ */
+bool deleteBoard(sudoku_board_t *b);
