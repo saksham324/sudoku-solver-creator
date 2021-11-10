@@ -17,24 +17,24 @@
  * Function guarantees:
  *  Board is initialized empty
  * Caller is responsible for:
- *  Calling deleteBoard on the returned sudoku_board
+ *  Calling deleteBoard on the returned sudoku_board_t
  */
 
-sudoku_board *generateEmptyBoard(); 
+sudoku_board_t *generateEmptyBoard(); 
 
 /************ fillBoard ************/
 /*
- * Takes a sudoku_board as input and fills it completely using the solver functionality
+ * Takes a sudoku_board_t as input and fills it completely using the solver functionality
  * 
  * Caller provides:
- *  An empty sudoku_board
+ *  An empty sudoku_board_t
  * Function guarantees:
  *  A board with one solution is returned
  * Caller is responsible for:
  *  Nothing
  */
 
-bool *fillBoard(sudoku_board *b); 
+bool *fillBoard(sudoku_board_t *b); 
 
 
 /********* removeNumbers *************/ 
@@ -42,7 +42,7 @@ bool *fillBoard(sudoku_board *b);
  * Removes n numbers from the filled board, and checks if board is still unique. 
  *  
  * Caller provides : 
- *  A valid, filled sudoku_board and a number `n` to remove. 
+ *  A valid, filled sudoku_board_t and a number `n` to remove. 
  * Function guarantees : 
  *  Incomplete board with a unique solution 
  * Return: 
@@ -52,7 +52,7 @@ bool *fillBoard(sudoku_board *b);
  * 
 */
 
-bool removeNumbers(sudoku_board *b, int n); 
+bool removeNumbers(sudoku_board_t *b, int n); 
 
 
 
