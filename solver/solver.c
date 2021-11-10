@@ -5,9 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int sovleBoard(int** board, int row, int column, int solutions){ //may need to be a 
 
-    if(row == 10){
+int solveBoard(int** board){
+    return solver(**board, 0, 0, 0);
+}
+
+int sovler(int** board, int row, int column, int solutions){ //may need to be a 
+
+    if(row == 9){
         int numOfSolutions = solutions;
         numOfSolutions += 1;
         return numOfSolutions;
@@ -15,7 +20,7 @@ int sovleBoard(int** board, int row, int column, int solutions){ //may need to b
     int nextRow;
     int nextColumn;
 
-    if(column == 9){
+    if(column == 8){
         int nextColumn = 1;
         int nextRow = row + 1;
     }
@@ -31,7 +36,7 @@ int sovleBoard(int** board, int row, int column, int solutions){ //may need to b
                 return sovleBoard(board, nextRow, nextColumn, solutions);
             }
             else{
-                if(i == 9){
+                if(i == 8){
                     return solutions;
                 }
                 else{
