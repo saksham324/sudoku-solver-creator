@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "solver.h": "c",
+        "creator.h": "c"
+    }
+}

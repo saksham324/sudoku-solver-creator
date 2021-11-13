@@ -16,7 +16,7 @@
  *  Nothing
  */
 
-int *solveBoard(sudoku_board_t *board); 
+int solveBoard(sudoku_board_t *board); 
 
 /************ loadBoard ************/
 

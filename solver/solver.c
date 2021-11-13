@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dirent.h>
+#include <ctype.h>
 #include "../common/common.h"
 #include "../creator/creator.h"
+
+const int BOARD_SIZE = 9; 
 
 /************ loadBoard ************/
 
@@ -22,7 +25,7 @@
 sudoku_board_t *loadBoard(FILE *fp) {
   if (!fp) return NULL;
 
-  sudoku_board_t *lBoard = generateEmptyBoard(); // generate Empty Board to be filled out 
+  sudoku_board_t *lBoard = generateEmptyBoard(BOARD_SIZE); // generate Empty Board to be filled out 
   if (!lBoard) return NULL;
   
   // make sure number of rows is valid, iterate through each row
@@ -35,64 +38,108 @@ sudoku_board_t *loadBoard(FILE *fp) {
 
       // Get each character from fp, check if char is a digit, if yes insert
       char ch = fgetc(fp);
-      if (ch == '\n') { 
-          rowCount++; 
-          break; 
-        }
+     
       if (!isdigit(ch)) { 
           continue; 
           }
 
       // Convert char to int value (ASCII)
-      lBoard->boardArray[rowCount][colCount] = (int)ch - 48;
-      colCount++;
+      if (isdigit(ch)) lBoard->boardArray[rowCount][colCount] = (int)ch - 48;
+      if (isdigit(ch)) colCount++;
+      
+      if (colCount == 9) { 
+        rowCount++; 
+        break; 
+      }
     }
   }
 
+  fprintf(stdout, "%s ", "load board succeeded! \n"); 
+  printBoard(lBoard); 
   return lBoard;
 }
 
 
-int solveBoard(int** board){
-    return solver(**board, 0, 0, 0);
-}
+// int solver(sudoku_board_t *board, int *row, int *column, int *solutions){ //may need to be a 
 
-int solver(int** board, int row, int column, int solutions){ //may need to be a 
+//     if(row == 9){
+//         // int numOfSolutions = solutions;
+//         // numOfSolutions += 1;
+//         return solutions + 1;
+//     }
+    
+//     // int nextColumn = 0;
+//     // int nextRow = 0;
 
-    if(row == 9){
-        int numOfSolutions = solutions;
-        numOfSolutions += 1;
-        return numOfSolutions;
-    }
-    int nextRow;
-    int nextColumn;
+//     if(++column >= 9){
+//         *column = 0; 
+//         *row += 1; 
+//     }
+//     // } else {
+//     //     nextColumn = column + 1;
+//     //     nextRow = row + 1;
+//     // }
 
-    if(column == 8){
-        int nextColumn = 1;
-        int nextRow = row + 1;
-    }
-    else{
-        int nextColumn = column + 1;
-        int nextRow = row + 1;
-    }
+//     if(board->boardArray[*row][*column] == 0){
+//         for (int i = 1; i <= 9; i++){
+//             if(isValid(board, &row, &column, i)){
+//                 board->boardArray[*row][*column] = i;
+//                 return solver(board, row, column, solutions);
+//             }
+//             else{
+//                 if(i == 9){
+//                     return solutions;
+//                 }
+//                 else{
+//                     continue;
+//                 }
+//             }
+//         }
+//     }
+    
+//     return solver(board, row, column, solutions);
+   
+// }
 
-    if(board[row][column] == 0){
-        for (int i = 1; i <= 9; i ++){
-            if(isValid(board, i, row, column)){
-                board[row][column] = i;
-                return sovleBoard(board, nextRow, nextColumn, solutions);
-            }
-            else{
-                if(i == 8){
-                    return solutions;
-                }
-                else{
-                    continue;
-                }
+bool solveBoardHelper(sudoku_board_t* b, int pos) {
+    int numZeros = 0;
+    for (int i = 0; i < b->size; i++) {
+        for (int j = 0; j < b->size; j++) {
+            if (!b->boardArray[i][j]) {
+                numZeros++;
             }
         }
     }
-    else{
-        return sovleBoard(board, nextRow, nextColumn, solutions);
+
+    // Base case of recursion
+    if (!numZeros) return true;
+
+    // Find row and column from position
+    int r = (int) (pos / b->size); 
+    int c = (int) (pos % b->size); 
+
+    // Step over filled numbers
+    if (b->boardArray[r][c]) return solveBoardHelper(b, pos + 1);
+
+    // Number to place
+    int currentVal = 1;
+    b->boardArray[r][c] = currentVal;
+
+    while (isValid(b, r, c, currentVal) || !solveBoardHelper(b, pos + 1)) {
+        b->boardArray[r][c] = ++currentVal;
+
+        if (currentVal > b->size) {
+            b->boardArray[r][c] = 0;
+            return false;
+        }
     }
+
+    return true;
 }
+
+int solveBoard(sudoku_board_t *board){
+    int solutions = isUnique(0, 0, board, 0); 
+    solveBoardHelper(board, 0); 
+    return solutions; 
+}
+

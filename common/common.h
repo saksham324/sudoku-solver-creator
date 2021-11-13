@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "../libcs50/mem.h"
 
 /**************** Global types ****************/
 typedef struct sudoku_board {
@@ -48,7 +47,7 @@ sudoku_board_t* generateEmptyBoard(int inputSize);
 * We guarantee:
 *   we ignore NULL board.
 */
-bool delete_board(sudoku_board_t *board);
+bool deleteBoard(sudoku_board_t *board);
 
 /************** print_board() **************/
 /* Prints the 9x9 sudoku board with the values
@@ -61,7 +60,7 @@ bool delete_board(sudoku_board_t *board);
 *   this function is written to print a standard 9x9 grid
 *   and will not correclty print boards of a different size
 */
-void print_board(sudoku_board_t *board);
+void printBoard(sudoku_board_t *board);
 
 /**************** isValid() ***************/
 /* Checks if the number we are trying to input is valid. That is, if it
@@ -76,8 +75,6 @@ void print_board(sudoku_board_t *board);
 *   row, and one to check the suqare.
 */
 bool isValid(sudoku_board_t *board, int row, int column, int value);
-
-#endif // __COMMON_H
 
 
 /********* isUnique *************/ 
@@ -99,29 +96,57 @@ bool isValid(sudoku_board_t *board, int row, int column, int value);
 
 int isUnique(int i, int j, sudoku_board_t *b, int count); 
 
-/************ printBoard ************/
-/*
- * Prints a given sudoku_board_t to stdout
- * 
- * Caller provides:
- *  A valid pointer to a sudoku_board_t struct
- * Function guarantee:
- *  sudoku_board_t is printed to stdout
- * Caller is responsible for:
- *  
- */
-void printBoard(sudoku_board_t *b, FILE *fp);
+// /************ printBoard ************/
+// /*
+//  * Prints a given sudoku_board_t to stdout
+//  * 
+//  * Caller provides:
+//  *  A valid pointer to a sudoku_board_t struct
+//  * Function guarantee:
+//  *  sudoku_board_t is printed to stdout
+//  * Caller is responsible for:
+//  *  
+//  */
+// void printBoard(sudoku_board_t *b, FILE *fp);
 
 
-/************ deleteBoard ***********/
-/*
- * takes a `sudoku_board_t` struct and frees all associated memory
- * 
- * Caller provides:
- *  A valid pointer to a sudoku_board_t struct
- * Function guarantee:
- *  All relevant memory is freed
- * Caller is responsible for:
- *  Nothing
- */
-bool deleteBoard(sudoku_board_t *b);
+// /************ deleteBoard ***********/
+// /*
+//  * takes a `sudoku_board_t` struct and frees all associated memory
+//  * 
+//  * Caller provides:
+//  *  A valid pointer to a sudoku_board_t struct
+//  * Function guarantee:
+//  *  All relevant memory is freed
+//  * Caller is responsible for:
+//  *  Nothing
+//  */
+// bool deleteBoard(sudoku_board_t *b);
+
+/*************** isValidMode() ****************/
+/* Checks if the user input for the mode is a valid
+* option, that is "create" or "solve"
+*
+* Caller provides:
+*   the input string of the "mode" 
+* We return:
+*   TRUE if input is either "create" or "solve", FALSE otherwise
+* Notes:
+*   We call normalizeWord() to make the input string into lowercase
+*/
+bool isValidMode(char *input);
+
+/************ isValidDifficulty() ************/
+/* Checks if the user input for the difficulty is a valid
+* option, that is "easy" or "hard"
+*
+* Caller provides:
+*   the input string of the "difficulty" 
+* We return:
+*   TRUE if input is either "easy" or "hard", FALSE otherwise
+* Notes:
+*   We call normalizeWord() to make the input string into lowercase
+*/
+bool isValidDifficulty(char *input);
+
+#endif //__COMMON_H

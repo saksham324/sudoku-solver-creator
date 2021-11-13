@@ -4,10 +4,25 @@
 #include <string.h>
 #include "../common/common.h"
 #include "../solver/solver.h"
+#include <time.h>
 
 
 static int getRandNumber(int min, int max) {
   return (rand() % (max - min + 1) + min);
+}
+
+static int generateRandomNum(sudoku_board_t * b, int row, int column) {
+  int insert;
+  while(1) {
+    // Generates a random number between 1 and 9
+    insert = getRandNumber(1, 9);
+
+    // Check if that number is in the current row, column, and cell
+    if (!(isValid(b, row, column, insert))) {
+      return insert;
+    }
+  }
+  return 0;
 }
 
 /********* removeNumbers *************/ 
@@ -26,14 +41,20 @@ static int getRandNumber(int min, int max) {
 */
 bool removeNumbers(sudoku_board_t *b, int n) {
   int numRemoved = 0; // set numbers removed to 0 initially 
-  int numIterations = 0; // set numIterations to 0 initially
-  long int maxChecks = 20000; 
+  long int numIterations = 0; // set numIterations to 0 initially
+  long int maxChecks = 1000000; 
 
-  int row = getRandNumber(0, b->size - 1); // generate random row number
-  int col = getRandNumber(0, b->size - 1); // generate random col number
+
+  // if (!b || (((b->size) * (b->size)) - 17) < n) return false;
 
   while (numRemoved < n) {
-    if (numIterations++ > maxChecks) return false; // surpassed maxIterations allowed
+    if (++numIterations > maxChecks) return false; // surpassed maxIterations allowed
+
+    int row = getRandNumber(0, b->size - 1); // generate random row number
+    int col = getRandNumber(0, b->size - 1); // generate random col number
+    
+    // printf("%d", numIterations); 
+
 
     if (!(b->boardArray[row][col])) continue;   // skip if it is already removed
 
@@ -41,7 +62,7 @@ bool removeNumbers(sudoku_board_t *b, int n) {
     b->boardArray[row][col] = 0; // remove the value in the board
 
     if (isUnique(0, 0, b, 0) == 1) {
-      numRemoved++; 
+      numRemoved+=1; 
     } else {
       b->boardArray[row][col] = num; 
     }
@@ -53,9 +74,9 @@ bool removeNumbers(sudoku_board_t *b, int n) {
 void generateRandomGrid(sudoku_board_t *b, int rowStart, int colStart) {
   if (rowStart < 0 || colStart < 0 || b->size < rowStart + 3 || b->size < colStart + 3) return; // make sure rowStart and colStart values are valid
   for (int i = rowStart; i < rowStart + 3; i++) { 
-    for (int j = colStart; i < colStart + 3; j++) {
-      int num = getRandNumber(1, 9); // generate random number to be added
-      if(!(isValid(i, j, b, num))) { // check if it is valid
+    for (int j = colStart; j < colStart + 3; j++) {
+      int num = generateRandomNum(b, i, j); // generate random number to be added
+      if(!isValid(b, i, j, num)) { // check if it is valid
         b->boardArray[i][j] = num; // if valid add it 
       }
     }

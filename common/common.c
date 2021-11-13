@@ -15,8 +15,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "common.h"
-#include "../libcs50/mem.h"
 
 /***************** File-local global variables ***************/
 
@@ -28,8 +26,8 @@ typedef struct sudoku_board {
 
 /******************** File-local functions *******************/
 /* not visible outside this file */
-bool is_in_row(sudoku_board_t *board, int row, int value);
-bool is_in_col(sudoku_board_t *board, int column, int value);
+bool is_in_row(sudoku_board_t *board, int row, int column, int value);
+bool is_in_col(sudoku_board_t *board, int row, int column, int value);
 bool is_in_square (sudoku_board_t *board, int row, int column, int value);
 
 /********************* Global functions *********************/
@@ -39,37 +37,59 @@ bool is_in_square (sudoku_board_t *board, int row, int column, int value);
 /* see common.h for description */
 sudoku_board_t*
 generateEmptyBoard(int inputSize){
-    sudoku_board_t* board = mem_malloc(sizeof(sudoku_board_t));
-    if(board == NULL){
-        return NULL;
-    } else{
-        // allocating space to the 2D array based on the input size:
-        int **newArray = mem_calloc(inputSize, sizeof(int*));
-        for(int i=0; i< inputSize; i++){
-            int *temp = mem_calloc(inputSize, sizeof(int));
-            if (temp != NULL) {
-                newArray[i] = temp; 
+    sudoku_board_t* board = malloc(sizeof(sudoku_board_t));
+    if (board == NULL) return NULL;
+
+    // allocating space to the 2D array based on the input size:
+    int **newArray = calloc(inputSize, sizeof(int*));
+    for(int i=0; i < inputSize; i++){
+        int *temp = calloc(inputSize, sizeof(int));
+        if (temp == NULL) return NULL; 
+        newArray[i] = temp; 
+    }
+    //assingning values and variables into our board structure:
+    board->size = inputSize;
+    board->boardArray = newArray;
+    return board;
+}
+
+/* Function called by isValidDifficulty. 
+* Converts all the characters of the word into lowercase. 
+* 
+* Caller provides:
+*   a word
+* We return:
+*   the normalized word
+*/
+void normalizeWord(char *s) {
+    if (s != NULL) {
+        int c = 0;
+   
+        while (s[c] != '\0') {
+
+            // subtracting 32 from the ASCII value
+            if (s[c] >= 'A' && s[c] <= 'Z') {
+                s[c] = s[c] + 32;
             }
+            c++;
         }
-        //assingning values and variables into our board structure:
-        board->size = inputSize;
-        board->boardArray = newArray;
-        return board;
     }
 }
 
 /********************** delete_board() **********************/
 /* see common.h for description */
 bool
-delete_board(sudoku_board_t *board)
+deleteBoard(sudoku_board_t *board)
 {
     if (board == NULL){
         return false;
     } else{
         for (int i=0; i < (board->size); i++){ // frees the size x size array
-            mem_free(board->boardArray[i]);
+            free(board->boardArray[i]);
         }
-        mem_free(board); // frees the board
+        free(board->boardArray); 
+        free(board); // frees the board
+        board = NULL; 
     }
     return true;
 }
@@ -77,55 +97,35 @@ delete_board(sudoku_board_t *board)
 /*********************** print_board() **********************/
 /* see common.h for description */
 void
-print_board(sudoku_board_t *board)
+printBoard(sudoku_board_t *b)
 {   
-    if (board == NULL){
-        fprintf (stdout,"NULL board. We cannot print it!");
-    } else{
-        int numCells = (board->size)*(board->size); // will store how many cells we have in the board. For a 9x9 grid, we will have 81 cells
-        int width = board->size;                    // will store the lenght of the board
-        int lenght = board->size;                   // will store the width of the board
-        int i=0;                                    // will hold count of how many numbers we have printed
-        while (i<numCells){ // loop through all numbers
-        // fill up each row first, then move to the following row:
-            for (int j=0; j<width;j++){ // prints the horizontal delimiter lines of the board
-                if (width == 0 || width == 3 || width == 6){
-                    fprintf(stdout, "-------------------------\n");
-                } 
-                for (int k = 0; k<(lenght/3); k++){
-                    if(k!=2){ // will print the first 6 numbers of the row, three at a time
-                        fprintf(stdout, "| %d %d %d", board->boardArray[width][3*k],board->boardArray[width][(3*k)+1],board->boardArray[width][(3*k)+2]);
-                        i = i+3; // increase the counter 
-                    } else{ // will print the last 3 numbers and go to a new line
-                        fprintf(stdout, "| %d %d %d |\n", board->boardArray[width][3*k],board->boardArray[width][(3*k)+1],board->boardArray[width][(3*k)+2]);
-                        i = i+3; // increase the counter
-                    }
-                    if(width == 8){ // print out the last delimiter line of the board
-                        fprintf(stdout, "-------------------------\n\n");
-                    }
-                }
-            }
+    if (!b) return;
+    fprintf(stdout, "%s", "\n");
+    for (int i = 0; i < b->size; i++) {
+        // if (i == 0 || (i % 3 == 0)) {
+        //     fprintf(stdout, "%s", "-------------------------");
+        //     fprintf(stdout, "%s", "\n"); 
+        // }
+        for (int j = 0; j < b->size; j++) {
+            // if (j == 0) fprintf(stdout, "%s ", "|"); 
+            fprintf(stdout, "%i ", b->boardArray[i][j]);
+            // if ((j + 1) % 3 == 0) fprintf(stdout, "%s ", "|");
         }
+        fprintf(stdout, "\n");
     }
+    // fprintf(stdout, "%s", "-------------------------\n");
 }
+
+
 
 /************************* isValid() ***********************/
 /* see common.h for description */
 bool
-isValid(sudoku_board_t *board, int row, int column, int value)
-{
-    if (is_in_row (board, row, value)== false ){ // checks if its valid in that row
-        if (is_in_col (board, column, value) == false){ // cheks if its valid in thar column
-            if (is_in_square (board, row, column, value)== false){ // checks if its valid in that small 3x3 sub-square
-                return true;
-            } else {
-                return false;
-            }
-        } else{
-            return false;
-        }
-    }
-    return false;
+isValid(sudoku_board_t *board, int row, int column, int value) {
+    if (is_in_row(board, row, column, value)) return true; 
+    if (is_in_col(board, row, column, value)) return true; 
+    if (is_in_square(board, row, column, value)) return true; 
+    return false; 
 }
 
 /* 
@@ -140,13 +140,11 @@ isValid(sudoku_board_t *board, int row, int column, int value)
 *   add the value into it.  
 */
 bool
-is_in_row(sudoku_board_t *board, int row, int value)
-{
-    int *rowArray = board->boardArray[row-1]; // gets the array of the row we are checking
+is_in_row(sudoku_board_t *board, int row, int column, int value){
+    // int *rowArray = board->boardArray[row-1]; // gets the array of the row we are checking
     for (int i = 0; i< board->size; i++){ // checks if each item in the row matched the value we are trying to insert
-        if (rowArray[i] == value){
-            return true;
-        }
+        if (i == column) continue; 
+        if (board->boardArray[row][i] == value) return true;
     }
     return false;
 }
@@ -163,12 +161,11 @@ is_in_row(sudoku_board_t *board, int row, int value)
 *   add the value into it.  
 */
 bool
-is_in_col(sudoku_board_t *board, int column, int value)
+is_in_col(sudoku_board_t *board, int row, int column, int value)
 {
     for (int i = 0; i< board->size; i++){ // will loop thrugh all the board
-        if (board->boardArray[i][column]== value){ // in the column we want to check, loop through all the cells(rows)
-            return true;
-        }
+        if (i == row) continue;
+        if (board->boardArray[i][column] == value) return true; // in the column we want to check, loop through all the cells(rows)
     }
     return false;
 }
@@ -190,20 +187,18 @@ is_in_square (sudoku_board_t *board, int row, int column, int value)
 {
     // Defines the range of rows and columns we will check. 
     // For example, for the position [2,3], our row indexers are 0-2, and column indexers are 0-2:
-    int rowLowerBound = 3*((row-1)/3);
-    int rowUpperBound = (3*((row-1)/3)+3);
-    int columnLowerBound = 3*((column-1)/3);
-    int columnUpperBound = (3*((column-1)/3)+3);
-    for (int i = rowLowerBound; i <rowUpperBound; i++){ // will check the rows that belong to the square we are at
-        int* curArray = board->boardArray[i]; // gets the array for one row at a time
-        for (int j = columnLowerBound; j< columnUpperBound; j++){ // will check the collumns that belong to the square we are at
-            if (curArray[j] == value){ // looks for the value 
-                return true;
-            }
+    int rowLowerBound = (int) (row / 3) * 3; 
+    int columnLowerBound = (int) (column / 3) * 3;  
+
+    for (int i = rowLowerBound; i < rowLowerBound + 3; i++){ // will check the rows that belong to the square we are at
+        for (int j = columnLowerBound; j < columnLowerBound + 3; j++){ // will check the collumns that belong to the square we are at
+            if (i == row && j == column) continue; 
+            if (board->boardArray[i][j]== value) return true; // looks for the value    
         }
     }
     return false;
 }
+
 
 /********* isUnique *************/ 
 
@@ -224,24 +219,57 @@ is_in_square (sudoku_board_t *board, int row, int column, int value)
 
 int isUnique(int i, int j, sudoku_board_t *b, int count) {
     // base case
-    if (i == 9) {
-        i = 0; 
-        if (++j == 9){
-            return 1 + count; 
-        }
-    }
+    if (j == 9) {        // if we have gotten to the end of the first row
+        j = 0;
+        if (++i == 9)  // if we have gotten to end of the board
+            return count + 1;
+  }
 
-    if (b->boardArray[i][j] != 0) { // skip empty cells 
-        return isUnique(i + 1, j , b, count); 
-    }
+  if (b->boardArray[i][j] != 0)  // skip filled cells
+      return isUnique(i, j + 1, b, count);
 
-    for (int num = 1; num <= 9 && count < 2; ++num) {
-        if (isValid(i, j, b, num)) {
-            b->boardArray[i][j] = num; // change the value and check if another solution exists
-            count = isUnique(i + 1, j, b, count); // find more solutions by moving position to i+1
-        } 
-    }
-
-    b->boardArray[i][j] = 0; // reset on backtrack 
-    return count; 
+  // search for 2 solutions instead of 1
+  // return, if 2 solutions are found
+  for (int val = 1; val <= 9 && count < 2; ++val) {
+      if (!isValid(b, i, j, val)) {
+          b->boardArray[i][j] = val;
+          // add additional solutions
+          count = isUnique(i, j + 1, b, count);
+      }
+  }
+  
+  b->boardArray[i][j] = 0; // reset on backtrack
+  return count;
 }
+
+// /************* File-local functions ************/
+// /* not visible outside this file */
+// void normalizeWord (char *word);
+
+// /************** Global functions **************/
+// /* that is, visible outside this file */
+
+/*************** isValidMode() ****************/
+/* validateInput.h for description */
+bool 
+isValidMode(char *input)
+{   printf("%s", input); 
+    normalizeWord(input);
+    if (strcmp(input, "create" ) != 0 || strcmp(input, "solve" ) != 0 ){
+        return false;
+    }
+    return true;
+}
+
+/************** isValidDifficulty() **************/
+/* validateInput.h for description */
+bool
+isValidDifficulty(char *input)
+{
+    normalizeWord (input);
+    if (strcmp(input, "easy" ) != 0 || strcmp(input, "hard" ) != 0 ){
+        return false;
+    }
+    return true;
+}
+
