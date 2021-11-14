@@ -1,4 +1,5 @@
 *.o
+fuzztest
 *core*
 .nfs*
-common
+sudoku

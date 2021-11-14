@@ -39,8 +39,6 @@ fuzztest: fuzztest.o $S/solver.o $R/creator.o $C/common.o
 test:
 	bash -v testing.sh
 
-
-
 valgrind:
 	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) create easy 
 	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) create hard 
