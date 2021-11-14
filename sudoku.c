@@ -51,7 +51,7 @@ int main(const int argc, char *argv[]){
         difficulty = argv[2]; 
         int numRemove; 
 
-        if (!isValidDifficulty(argv[2])) {
+        if (!isValidDifficulty(difficulty)) {
             fprintf(stderr, "Usage: ./sudoku create difficulty\n\n");
             exit(2); 
         }

@@ -107,7 +107,7 @@ printBoard(sudoku_board_t *b, FILE *fp)
             fprintf(fp, "%s", "\n"); 
         }
         for (int j = 0; j < b->size; j++) {
-            if (j == 0) fprintf(stdout, "%s ", "|"); 
+            if (j == 0) fprintf(fp, "%s ", "|"); 
             fprintf(fp, "%i ", b->boardArray[i][j]);
             if ((j + 1) % 3 == 0) fprintf(fp, "%s ", "|");
         }
@@ -267,9 +267,9 @@ bool
 isValidDifficulty(char *input)
 {
     normalizeWord (input);
-    if (strcmp(input, "easy" ) != 0 || strcmp(input, "hard" ) != 0 ){
-        return false;
+    if (strcmp(input, "easy" ) == 0 || strcmp(input, "hard" ) == 0 ){
+        return true;
     }
-    return true;
+    return false;
 }
 
