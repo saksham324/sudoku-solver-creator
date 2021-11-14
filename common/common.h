@@ -1,9 +1,8 @@
 /* common.h - header file for CS50 'common' module (this used in the 'sudoku.c' file)
 * 
-* Author: Sayuri Tais Miyamoto Magnabosco
+* Author: Sayuri Tais Miyamoto Magnabosco, Saksham Arora, Brody Thompson
 * November 5th, 2021
 * CS50 Fall 2021, Final Project
-*
 */ 
 
 #ifndef __COMMON_H
@@ -39,7 +38,7 @@ typedef struct sudoku_board {
 */
 sudoku_board_t* generateEmptyBoard(int inputSize);
 
-/**************** delete_board() **************/
+/**************** deleteBoard() **************/
 /* Delete the whole board
 *
 * Caller provides:
@@ -53,14 +52,14 @@ bool deleteBoard(sudoku_board_t *board);
 /* Prints the 9x9 sudoku board with the values
 *
 * Caller provides:
-*   a valid, non-NULL board strucutre
-* We guarantee:
+*   a valid, non-NULL board strucutre, a pointer to a file
+* Function guarantees:
 *   the values of the board will not change
 * Note:
 *   this function is written to print a standard 9x9 grid
-*   and will not correclty print boards of a different size
+*   and will not correctly print boards of a different size
 */
-void printBoard(sudoku_board_t *board);
+void printBoard(sudoku_board_t *board, FILE *fp);
 
 /**************** isValid() ***************/
 /* Checks if the number we are trying to input is valid. That is, if it
@@ -69,13 +68,12 @@ void printBoard(sudoku_board_t *board);
 * Caller provides:
 *   valid board, row, column, and the value attempted to input in the board
 * We return:
-*   TRUE if the value can be inserted in that row/column/square, false otherwise
+*   FALSE if the value can be inserted in that row/column/square, TRUE otherwise
 * Note:
 *   We use three helper functions, one to check the column, one to chek the 
 *   row, and one to check the suqare.
 */
 bool isValid(sudoku_board_t *board, int row, int column, int value);
-
 
 /********* isUnique *************/ 
 
@@ -95,33 +93,6 @@ bool isValid(sudoku_board_t *board, int row, int column, int value);
  */
 
 int isUnique(int i, int j, sudoku_board_t *b, int count); 
-
-// /************ printBoard ************/
-// /*
-//  * Prints a given sudoku_board_t to stdout
-//  * 
-//  * Caller provides:
-//  *  A valid pointer to a sudoku_board_t struct
-//  * Function guarantee:
-//  *  sudoku_board_t is printed to stdout
-//  * Caller is responsible for:
-//  *  
-//  */
-// void printBoard(sudoku_board_t *b, FILE *fp);
-
-
-// /************ deleteBoard ***********/
-// /*
-//  * takes a `sudoku_board_t` struct and frees all associated memory
-//  * 
-//  * Caller provides:
-//  *  A valid pointer to a sudoku_board_t struct
-//  * Function guarantee:
-//  *  All relevant memory is freed
-//  * Caller is responsible for:
-//  *  Nothing
-//  */
-// bool deleteBoard(sudoku_board_t *b);
 
 /*************** isValidMode() ****************/
 /* Checks if the user input for the mode is a valid

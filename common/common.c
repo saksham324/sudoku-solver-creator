@@ -4,7 +4,7 @@
 *             3. Printing the board
 *             4. Checks if a number to be inserted is valid
 * 
-* Author: Sayuri Tais Miyamoto Magnabosco
+* Author: Sayuri Tais Miyamoto Magnabosco, Saksham Arora, Brody Thompson
 * November 5th, 2021
 * CS50 Fall 2021, Final Project
 *
@@ -76,7 +76,7 @@ void normalizeWord(char *s) {
     }
 }
 
-/********************** delete_board() **********************/
+/********************** deleteBoard() **********************/
 /* see common.h for description */
 bool
 deleteBoard(sudoku_board_t *board)
@@ -94,26 +94,26 @@ deleteBoard(sudoku_board_t *board)
     return true;
 }
 
-/*********************** print_board() **********************/
+/*********************** printBoard() **********************/
 /* see common.h for description */
 void
-printBoard(sudoku_board_t *b)
+printBoard(sudoku_board_t *b, FILE *fp)
 {   
-    if (!b) return;
-    fprintf(stdout, "%s", "\n");
+    if (!b || !fp) return;
+    fprintf(fp, "%s", "\n");
     for (int i = 0; i < b->size; i++) {
-        // if (i == 0 || (i % 3 == 0)) {
-        //     fprintf(stdout, "%s", "-------------------------");
-        //     fprintf(stdout, "%s", "\n"); 
-        // }
-        for (int j = 0; j < b->size; j++) {
-            // if (j == 0) fprintf(stdout, "%s ", "|"); 
-            fprintf(stdout, "%i ", b->boardArray[i][j]);
-            // if ((j + 1) % 3 == 0) fprintf(stdout, "%s ", "|");
+        if (i == 0 || (i % 3 == 0)) {
+            fprintf(fp, "%s", "-------------------------");
+            fprintf(fp, "%s", "\n"); 
         }
-        fprintf(stdout, "\n");
+        for (int j = 0; j < b->size; j++) {
+            if (j == 0) fprintf(stdout, "%s ", "|"); 
+            fprintf(fp, "%i ", b->boardArray[i][j]);
+            if ((j + 1) % 3 == 0) fprintf(fp, "%s ", "|");
+        }
+        fprintf(fp, "\n");
     }
-    // fprintf(stdout, "%s", "-------------------------\n");
+    fprintf(fp, "%s", "-------------------------\n");
 }
 
 

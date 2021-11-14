@@ -1,4 +1,10 @@
-
+/* creator.c - module with creator functions to be used in the Sudoku Project
+*             1. Fills the sudoku board
+*             2. Removes numbers from sudoku board
+* Author: Saksham Arora
+* November 5th, 2021
+* CS50 Fall 2021, Final Project
+*/ 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -54,55 +60,24 @@ sudoku_board_t *loadBoard(FILE *fp) {
     }
   }
 
-  fprintf(stdout, "%s ", "load board succeeded! \n"); 
-  printBoard(lBoard); 
   return lBoard;
 }
 
-
-// int solver(sudoku_board_t *board, int *row, int *column, int *solutions){ //may need to be a 
-
-//     if(row == 9){
-//         // int numOfSolutions = solutions;
-//         // numOfSolutions += 1;
-//         return solutions + 1;
-//     }
-    
-//     // int nextColumn = 0;
-//     // int nextRow = 0;
-
-//     if(++column >= 9){
-//         *column = 0; 
-//         *row += 1; 
-//     }
-//     // } else {
-//     //     nextColumn = column + 1;
-//     //     nextRow = row + 1;
-//     // }
-
-//     if(board->boardArray[*row][*column] == 0){
-//         for (int i = 1; i <= 9; i++){
-//             if(isValid(board, &row, &column, i)){
-//                 board->boardArray[*row][*column] = i;
-//                 return solver(board, row, column, solutions);
-//             }
-//             else{
-//                 if(i == 9){
-//                     return solutions;
-//                 }
-//                 else{
-//                     continue;
-//                 }
-//             }
-//         }
-//     }
-    
-//     return solver(board, row, column, solutions);
-   
-// }
-
+/* ****** solveBoardHelper **********
+ * Recursive helper function for solveBoard, tries plugging in all possible values 
+ * and backtracks with recursion until solved
+ * 
+ * Caller provides:
+ *  A unique, unsolved board 
+ *  A starting cell position of 0
+ * Function guarantees: 
+ *  Return true if board is solved, false if the board remains unsolved 
+ *  Board is solved after function returns 
+ * Caller is responsible for:
+ *  Freeing all memory
+ */
 bool solveBoardHelper(sudoku_board_t* b, int pos) {
-    int numZeros = 0;
+    int numZeros = 0; // count number of zeros
     for (int i = 0; i < b->size; i++) {
         for (int j = 0; j < b->size; j++) {
             if (!b->boardArray[i][j]) {
@@ -125,7 +100,7 @@ bool solveBoardHelper(sudoku_board_t* b, int pos) {
     int currentVal = 1;
     b->boardArray[r][c] = currentVal;
 
-    while (isValid(b, r, c, currentVal) || !solveBoardHelper(b, pos + 1)) {
+    while (isValid(b, r, c, currentVal) || !solveBoardHelper(b, pos + 1)) { // while the Number is present, iterate to next cell position 
         b->boardArray[r][c] = ++currentVal;
 
         if (currentVal > b->size) {
@@ -137,6 +112,16 @@ bool solveBoardHelper(sudoku_board_t* b, int pos) {
     return true;
 }
 
+/************ solveBoard ************/
+/*
+ * Solves a passed board and returns whether or not the solution is unique
+ * Caller provides:
+ *  A valid sudoku_board_t
+ * We guarantee:
+ *  The passed board is solved with one solution or false is returned
+ * Caller is responsible for:
+ *  Nothing
+ */
 int solveBoard(sudoku_board_t *board){
     int solutions = isUnique(0, 0, board, 0); 
     solveBoardHelper(board, 0); 

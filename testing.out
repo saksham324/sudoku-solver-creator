@@ -1,0 +1,110 @@
+bash -v testing.sh
+#!/bin/bash
+# testing.sh
+# usage: bash -v testing.sh
+
+### invalid arguments
+
+# incorrect number of arguments
+./sudoku
+Usage: ./sudoku mode difficulty
+
+
+./sudoku sovle creator yoyoyo
+Command must be either `solve` or `create`
+
+# invalid arguments
+./sudoku badbadnotgood
+Command must be either `solve` or `create`
+
+./sudoku the c crew
+Command must be either `solve` or `create`
+
+### testing create
+
+# create easy
+./sudoku create easy
+Usage: ./sudoku create difficulty
+
+
+# create at level 2
+./sudoku create hard
+Usage: ./sudoku create difficulty
+
+
+# create outside easy or hard
+./sudoku create beginner
+Usage: ./sudoku create difficulty
+
+
+### testing solve
+
+# test with custom visual / from a file
+./sudoku solve < test.out 
+
+
+-------------------------
+| 3 4 1 | 5 2 8 | 6 7 9 | 
+| 5 7 9 | 1 6 3 | 2 4 8 | 
+| 8 2 6 | 7 9 4 | 5 3 1 | 
+-------------------------
+| 1 5 4 | 3 8 9 | 7 2 6 | 
+| 2 8 7 | 4 1 6 | 9 5 3 | 
+| 6 9 3 | 2 5 7 | 8 1 4 | 
+-------------------------
+| 9 3 2 | 8 4 5 | 1 6 7 | 
+| 7 1 8 | 6 3 2 | 4 9 5 | 
+| 4 6 5 | 9 7 1 | 3 8 2 | 
+-------------------------
+
+# test with provided visual
+./sudoku solve < test2.out 
+
+
+-------------------------
+| 6 5 8 | 1 2 3 | 7 4 9 | 
+| 1 4 9 | 5 6 7 | 3 2 8 | 
+| 7 3 2 | 4 8 9 | 1 5 6 | 
+-------------------------
+| 5 1 7 | 9 3 2 | 6 8 4 | 
+| 3 8 6 | 7 4 5 | 9 1 2 | 
+| 9 2 4 | 8 1 6 | 5 7 3 | 
+-------------------------
+| 2 7 5 | 6 9 4 | 8 3 1 | 
+| 4 9 1 | 3 5 8 | 2 6 7 | 
+| 8 6 3 | 2 7 1 | 4 9 5 | 
+-------------------------
+
+# test from an already solved board
+./sudoku solve < test3.out
+
+
+-------------------------
+| 1 8 6 | 3 2 5 | 4 9 7 | 
+| 4 2 7 | 1 8 9 | 6 3 5 | 
+| 5 9 3 | 6 4 7 | 1 8 2 | 
+-------------------------
+| 3 7 9 | 2 6 4 | 8 5 1 | 
+| 6 1 5 | 9 7 8 | 2 4 3 | 
+| 8 4 2 | 5 1 3 | 7 6 9 | 
+-------------------------
+| 7 5 8 | 4 9 1 | 3 2 6 | 
+| 2 3 1 | 8 5 6 | 9 7 4 | 
+| 9 6 4 | 7 3 2 | 5 1 8 | 
+-------------------------
+
+# test with non-unique board
+./sudoku solve < test4.out
+Board does not have unique solution
+
+# test with a non-existing file
+./sudoku solve < test6.out
+testing.sh: line 43: test6.out: No such file or directory
+
+### fuzz testing
+
+# fuzz testing solve with 250 boards
+./fuzztest 250
+Passed 250/250 tests!
+
+

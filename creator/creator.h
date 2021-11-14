@@ -1,5 +1,7 @@
-/* 
-* Header file for creator module
+/* create.h - header file for CS50 'create' module
+* Author: Sayuri Tais Miyamoto Magnabosco, Saksham Arora, Brody Thompson
+* November 5th, 2021
+* CS50 Fall 2021, Final Project
 */
 
 #include <stdio.h>

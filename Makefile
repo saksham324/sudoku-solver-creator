@@ -8,7 +8,7 @@ PROG = sudoku
 OBJS = sudoku.o $S/solver.o $R/creator.o $C/common.o 
 
 MAKE = make
-.PHONY: all clean test valgrind
+.PHONY: all clean test valgrind fuzztest
 
 all: 
 	$(MAKE) -C $C
@@ -30,9 +30,18 @@ clean:
 	$(MAKE) -C $R clean
 	$(MAKE) -C $S clean
 
-# test:
-# 	./testing.sh
+fuzztest.o: fuzztest.c $C/common.h $R/creator.h $S/solver.h
+	$(CC) $(CFLAGS) -c -o $@ fuzztest.c
 
-# valgrind:
-# 	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) create
-# 	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) solve < tests/test2/test2
+fuzztest: fuzztest.o $S/solver.o $R/creator.o $C/common.o 
+	$(CC) $(CFLAGS) $^ -o $@
+
+test:
+	bash -v testing.sh
+
+
+
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) create easy 
+	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) create hard 
+	valgrind --leak-check=full --show-leak-kinds=all ./$(PROG) solve < test.out

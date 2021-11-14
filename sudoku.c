@@ -20,7 +20,6 @@
 static const int BOARD_SIZE = 9;  // how long each row and column will be (e.g. 9 for 9x9 grid)
 static const int MAX_ITERATIONS = 40; 
 
-
 /******************** Data structures *******************/
 
 /**************** Local function prototypes **************/
@@ -35,39 +34,38 @@ int main(const int argc, char *argv[]){
 
     // Validate arguments:
     // If number of input arguments is wrong
-    if (argc != 3){  
+    if (argc < 2){  
         fprintf(stderr, "Usage: ./sudoku mode difficulty\n\n");
 		exit(1);
     }
-    //Checks if the input mode is a valid one 
-    // if (isValidMode(argv[1])) {
-    //     printf("%s", argv[1]); 
-    //     fprintf(stderr, "Error: invalid mode option. You can pick between 'create' or 'solve'\n\n");
-    //     exit(2);
-    // }
-    // // Checks if the input difficulty is a valid one (easy/hard)
-    // if (isValidDifficulty(argv[2])) {
-    //     fprintf(stderr, "Error: invalid difficulty option. You can pick between 'easy' or 'hard'\n\n");
-    //     exit(3);
-    // }
 
     // Since the inputs are correct, we can assign them into variables:
     mode = argv[1];
-    difficulty = argv[2];
 
     if (strcmp(mode, "create") == 0) { // if in create mode, create empty board
+        if (argc != 3) {
+            fprintf(stderr, "Usage: ./sudoku create difficulty\n\n");
+            exit(2); 
+        }
+
+        difficulty = argv[2]; 
+        int numRemove; 
+
+        if (!isValidDifficulty(argv[2])) {
+            fprintf(stderr, "Usage: ./sudoku create difficulty\n\n");
+            exit(2); 
+        }
+        else {
+            numRemove = strcmp(difficulty, "easy") == 0 ? 44 : 56; 
+        }
+
         board = generateEmptyBoard(BOARD_SIZE); 
         if(!board) {
             exit(4); // error if board could not be created 
         }
         
         int fillTries = 0; // tracker of iterations
-        int numRemove = 0; 
-        if(strcmp(difficulty, "easy") == 0){
-            numRemove = 44;
-        } else {
-            numRemove = 56; 
-        } 
+        
         
          // numbers to remove from filled board based on difficulty 
         while(!fillBoard(board) && fillTries < MAX_ITERATIONS){
@@ -94,30 +92,36 @@ int main(const int argc, char *argv[]){
             exit(5); 
         }
 
-        // FILE *fp; 
-        // fp = fopen("create.out", "w"); 
-        // printBoard(board, fp); // write created board into file
-
-        printBoard(board); // write created board into stdout
+        printBoard(board, stdout); // write created board into stdout
+        // add code to save unfilled board 
         deleteBoard(board); // delete board 
 
     } else if (strcmp(mode, "solve") == 0) {
         FILE *loadFp = stdin;  
         board = loadBoard(loadFp); // load board in from stdin
 
-        if(!board) exit(4); // exit if board couldn't be loaded 
-
+        if(!board) {
+            fprintf(stderr, "Invalid board, could not load board. \n"); 
+            exit(4); // exit if board couldn't be loaded 
+        }
         int solutions = solveBoard(board); // solve board and save the number of solutions it has
         if (!solutions) {
-            fprintf(stderr, "Could not find solutions to given board"); 
+            fprintf(stderr, "Could not find solutions to given board\n"); 
         } else if (solutions == 1) {
-            fprinf(stdout, "%s", "\n"); 
-            printBoard(board); // print unique solution
+            fprintf(stdout, "%s", "\n"); 
+            printBoard(board, stdout); // print unique solution
+            FILE *fp = fopen("saveBoard.out", "w"); 
+            if (!fp) exit(5); 
+            else printBoard(board, fp); 
+            // add code to save 
         } else {
-            fprintf(stderr, "Board does not have unique solution"); 
+            fprintf(stderr, "Board does not have unique solution\n"); 
         }
 
         deleteBoard(board); // delete board 
+    } else {
+        fprintf(stderr, "Command must be either `solve` or `create`\n"); 
+        exit(3); 
     }
     exit(0);
 }
