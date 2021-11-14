@@ -93,7 +93,10 @@ int main(const int argc, char *argv[]){
         }
 
         printBoard(board, stdout); // write created board into stdout
-        // add code to save unfilled board 
+        FILE *fp = fopen("saveUnfilledBoard.out", "w"); // save unfilled board into file
+        if (!fp) exit(5); 
+        else printBoard(board, fp); 
+        fclose(fp); 
         deleteBoard(board); // delete board 
 
     } else if (strcmp(mode, "solve") == 0) {
@@ -109,11 +112,11 @@ int main(const int argc, char *argv[]){
             fprintf(stderr, "Could not find solutions to given board\n"); 
         } else if (solutions == 1) {
             fprintf(stdout, "%s", "\n"); 
+            FILE *fp = fopen("saveFilledBoard.out", "w"); 
             printBoard(board, stdout); // print unique solution
-            FILE *fp = fopen("saveBoard.out", "w"); 
-            if (!fp) exit(5); 
-            else printBoard(board, fp); 
-            // add code to save 
+            printBoard(board, fp); // save solved board to file
+            fclose(fp); 
+
         } else {
             fprintf(stderr, "Board does not have unique solution\n"); 
         }
