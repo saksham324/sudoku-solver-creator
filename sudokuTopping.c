@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 #include "./common/common.h"
 #include "./creator/creator.h"
 #include "./solver/solver.h"
@@ -185,7 +186,11 @@ solveBoardRecent(sudoku_board_t *board)
         fprintf(stderr, "Invalid board, could not load board. \n"); 
         exit(4); // exit if board couldn't be loaded 
     }
+    clock_t t = clock();
     int solutions = solveBoard(board); // solve board and save the number of solutions it has
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+    
     if (!solutions) {
         fprintf(stderr, "Could not find solutions to given board\n"); 
     } else if (solutions == 1) {
@@ -194,9 +199,11 @@ solveBoardRecent(sudoku_board_t *board)
         fprintf(stdout, "Solved board:");
         printBoard(board, stdout); // print unique solution
         printBoard(board, fp); // save solved board to file
+        fprintf(stdout, "\033[0;32m"); // prints in green color
+        printf("It took %f seconds to solve this board\n", time_taken);  // calculate elapsed time by finding difference (end - begin)
+        fprintf(stdout, "\033[0m"); //Resets the text to default color
         fprintf(stdout, "The solution was saved into the file 'saveFilledBoard.out'\n");
         fclose(fp); 
-
     } else {
         fprintf(stderr, "Board does not have unique solution\n"); 
     }
