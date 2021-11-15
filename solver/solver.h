@@ -1,5 +1,8 @@
-/* 
-* Header file for Solver module
+/* solver.h - Header file for Solver module
+*
+* Authors: The C Crew - Brody T., Saksham A., Sayuri M.
+* November 5th, 2021
+* CS50 Fall 2021, Final Project
 */ 
 
 #include <stdio.h> 

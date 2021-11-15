@@ -1,14 +1,22 @@
+# Makefile for the sudoku game
+#
+# Authors: The C Crew - Brody T., Saksham A., Sayuri M. 
+# CS50 Fall 2021, Final Project 
+# November 13th, 2021
+
 C = common
 R = creator
 S = solver
 
 CC = gcc
 CFLAGS = -Wall -pedantic -std=c11 -ggdb $(DEBUG) -I$C -I$R -I$S
-PROG = sudoku
-OBJS = sudoku.o $S/solver.o $R/creator.o $C/common.o 
+PROG = sudoku sudokuTopping fuzztest
+OBJS = sudoku.o $S/solver.o $R/creator.o $C/common.o
+OBJSTOPPING = sudokuTopping.o
+OBJSTEST = fuzztest.o
 
 MAKE = make
-.PHONY: all clean test valgrind fuzztest
+.PHONY: all clean test valgrind
 
 all: 
 	$(MAKE) -C $C
@@ -16,11 +24,14 @@ all:
 	$(MAKE) -C $S
 	$(MAKE) $(PROG)
 
-$(PROG): $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@
+sudoku: $C/common.h $R/creator.h $S/solver.h $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $C/common.h $R/creator.h $S/solver.h -o $@ -lm
 
-sudoku.o: $C/common.h $R/creator.h $S/solver.h
-	$(CC) $(CFLAGS) -c -o $@ sudoku.c 
+fuzztest: $S/solver.o $R/creator.o $C/common.o $(OBJSTEST)
+	$(CC) $(CFLAGS) $(OBJSTEST) $S/solver.o $R/creator.o $C/common.o -o $@ -lm
+
+sudokuTopping: $S/solver.o $R/creator.o $C/common.o $(OBJSTOPPING)
+	$(CC) $(CFLAGS) $(OBJSTOPPING) $S/solver.o $R/creator.o $C/common.o -o $@ -lm
 
 clean:
 	rm -f $(PROG)
@@ -29,12 +40,6 @@ clean:
 	$(MAKE) -C $C clean
 	$(MAKE) -C $R clean
 	$(MAKE) -C $S clean
-
-fuzztest.o: fuzztest.c $C/common.h $R/creator.h $S/solver.h
-	$(CC) $(CFLAGS) -c -o $@ fuzztest.c
-
-fuzztest: fuzztest.o $S/solver.o $R/creator.o $C/common.o 
-	$(CC) $(CFLAGS) $^ -o $@
 
 test:
 	bash -v testing.sh

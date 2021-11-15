@@ -1,3 +1,9 @@
+/* fuzztest.c - implements code to generate random sudoku boards to test the sudoku.c program
+* 
+* Authors: The C Crew - Brody T., Saksham A., Sayuri M. 
+* CS50 Fall 2021, Final Project 
+* November 11th, 2021
+*/ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,8 +13,10 @@
 #include "./creator/creator.h"
 #include "./solver/solver.h"
 
+/**************** Local function prototypes **************/
 bool compareBoards(sudoku_board_t *b, sudoku_board_t *solved); 
 
+/***********************  Main  **************************/
 int main (int argc, char *argv[])
 {
     if (argc < 2) {                 

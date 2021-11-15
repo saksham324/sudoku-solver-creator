@@ -1,6 +1,6 @@
 /* common.h - header file for CS50 'common' module (this used in the 'sudoku.c' file)
 * 
-* Author: Sayuri Tais Miyamoto Magnabosco, Saksham Arora, Brody Thompson
+* Authors: The C Crew - Brody T., Saksham A., Sayuri M.
 * November 5th, 2021
 * CS50 Fall 2021, Final Project
 */ 

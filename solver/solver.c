@@ -1,7 +1,7 @@
 /* creator.c - module with creator functions to be used in the Sudoku Project
 *             1. Fills the sudoku board
 *             2. Removes numbers from sudoku board
-* Author: Saksham Arora
+* Authors: The C Crew - Brody T., Saksham A., Sayuri M.
 * November 5th, 2021
 * CS50 Fall 2021, Final Project
 */ 
@@ -16,19 +16,28 @@
 
 const int BOARD_SIZE = 9; 
 
-/************ loadBoard ************/
+/******************** File-local functions *******************/
+/* not visible outside this file */
+bool solveBoardHelper(sudoku_board_t* b, int pos);
 
-/*
- * Loads board from stdin and validates loaded board
- * 
- * Caller provides:
- *  Valid file pointer to read from
- * Function guarantee:
- *  Returned board is valid or return NULL
- * Caller is responsible for:
- *  Calling deleteBoard on the returned sudoku_board_t
- */
-sudoku_board_t *loadBoard(FILE *fp) {
+
+/********************* Global functions *********************/
+/* that is, visible outside this file */
+
+/************ solveBoard ************/
+/* see solver.h for more details*/
+int 
+solveBoard(sudoku_board_t *board)
+{
+    int solutions = isUnique(0, 0, board, 0); 
+    solveBoardHelper(board, 0); 
+    return solutions; 
+}
+
+/************ loadBoard ************/
+/* see solver.h for more details*/
+sudoku_board_t *loadBoard(FILE *fp) 
+{
   if (!fp) return NULL;
 
   sudoku_board_t *lBoard = generateEmptyBoard(BOARD_SIZE); // generate Empty Board to be filled out 
@@ -63,7 +72,7 @@ sudoku_board_t *loadBoard(FILE *fp) {
   return lBoard;
 }
 
-/* ****** solveBoardHelper **********
+/*
  * Recursive helper function for solveBoard, tries plugging in all possible values 
  * and backtracks with recursion until solved
  * 
@@ -76,7 +85,9 @@ sudoku_board_t *loadBoard(FILE *fp) {
  * Caller is responsible for:
  *  Freeing all memory
  */
-bool solveBoardHelper(sudoku_board_t* b, int pos) {
+bool 
+solveBoardHelper(sudoku_board_t* b, int pos) 
+{
     int numZeros = 0; // count number of zeros
     for (int i = 0; i < b->size; i++) {
         for (int j = 0; j < b->size; j++) {
@@ -111,20 +122,3 @@ bool solveBoardHelper(sudoku_board_t* b, int pos) {
 
     return true;
 }
-
-/************ solveBoard ************/
-/*
- * Solves a passed board and returns whether or not the solution is unique
- * Caller provides:
- *  A valid sudoku_board_t
- * We guarantee:
- *  The passed board is solved with one solution or false is returned
- * Caller is responsible for:
- *  Nothing
- */
-int solveBoard(sudoku_board_t *board){
-    int solutions = isUnique(0, 0, board, 0); 
-    solveBoardHelper(board, 0); 
-    return solutions; 
-}
-

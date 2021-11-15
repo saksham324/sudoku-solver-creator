@@ -1,31 +1,23 @@
-/* sudoku.c - 
+/* sudoku.c - implements a sudoku creator and solver for a 9×9 board
 * 
 * Authors: The C Crew - Brody T., Saksham A., Sayuri M. 
 * CS50 Fall 2021, Final Project 
 * November 5th, 2021
-*
 */ 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <time.h>
 #include "./common/common.h"
 #include "./creator/creator.h"
 #include "./solver/solver.h"
-#include <time.h>
-
 
 /***************** Local global variables ***************/
 static const int BOARD_SIZE = 9;  // how long each row and column will be (e.g. 9 for 9x9 grid)
 static const int MAX_ITERATIONS = 40; 
 
-/******************** Data structures *******************/
-
-/**************** Local function prototypes **************/
-
 /***********************  Main  **************************/
-
 int main(const int argc, char *argv[]){
     srand(time(0));
     char *mode;          // string input set to `create` or `solve`
