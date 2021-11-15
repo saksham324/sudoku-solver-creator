@@ -4,6 +4,31 @@
 
 ### TSE Indexer Implementation Spec
 
+
+### General Implementation and Pseudocode
+
+We implement the *creator* functionality by executing ```./sudoku create [difficulty]``` from the command line where difficulty indicates the desired difficulty of the generated, incomplete sudoku puzzle, either **easy** or **hard**. 
+
+**Create** is implemented by initializing an empty sudoku_board structure with all 0s, populating the 9x9 grid, then removing the number of random cells necessary to generate a sudoku puzzle with a unique solution.
+
+1. We initialize a structure **sudoku_board** to represent the sudoku grid. The structure contains two parameters: a 2D array, which is a double-pointer array of integers, and the other an integer that specifies the size of the board.
+The board is initialized with zeros everywhere to represent the empty cells. 
+2. Populate the board by using **solveBoard** to recursively fill in the empty cells. 
+3. Call **removeNumbers** to remove the number of cells from the completed board based on difficulty inputed by the user.  
+4. While there are still cells to be removed, choose a random non-empty cell to remove. Temporarily store the value of that cell and set the cell to empty. Check if the grid has a unique solution, if not replace the emptied cell with its original value. Otherwise, increment the count of cells that have been removed. 
+5. Print the board to stdin for the user. 
+6. Free all memory. 
+
+<hr>
+
+**Solve** is implemented by passing in an incomplete **sudoku_board** struct, then solving the board by filling in empty cells and backtracking whenever an inserted value is not valid, done recursively until the board is fully populated. The board is then printed for the user. 
+
+1. Load in a board. 
+2. Pass the board to the solver. First check whether the board has a unique solution. If the board has a unique solution, return 1. Else, return 0 for no solutions or for more than one solution. 
+3. Go through the board one cell at a time and fill in empty ones recursively. Use recursive helper `solveBoardHelper` which, starting from a value of 1, inserts a value into a empty cell. If the value added is already seen board's its row, column, or 3x3 grid, or if a recursive call of solveBoardHelper from the next empty cell does not yield a solved board, change the value of the number inserted and try again. 
+4. If the board is unique with one solution, print the solved puzzle to stdout, else print error and exit.
+5. Delete the board. 
+
 ### Structs
 
 * *sudoku_board* represents a 9x9 sudoku board as a 2D array of integers ranging from 1-9 with 0 denoting an empty cell. 
@@ -161,31 +186,6 @@ int *solveBoard(sudoku_board *board);
  */
 sudoku_board *loadBoard(FILE *fp);
 ```
-
-### Implementation
-
-We implement the *creator* functionality by executing ```./sudoku create [difficulty]``` from the command line where difficulty indicates the desired difficulty of the generated, incomplete sudoku puzzle, either **easy** or **hard**. 
-
-**Create** is implemented by initializing an empty sudoku_board structure with all 0s, populating the 9x9 grid, then removing the number of random cells necessary to generate a sudoku puzzle with a unique solution.
-
-1. We initialize a structure **sudoku_board** to represent the sudoku grid. The structure contains two parameters: a 2D array, which is a double-pointer array of integers, and the other an integer that specifies the size of the board.
-The board is initialized with zeros everywhere to represent the empty cells. 
-2. Populate the board by using **solveBoard** to recursively fill in the empty cells. 
-3. Call **removeNumbers** to remove the number of cells from the completed board based on difficulty inputed by the user.  
-4. While there are still cells to be removed, choose a random non-empty cell to remove. Temporarily store the value of that cell and set the cell to empty. Check if the grid has a unique solution, if not replace the emptied cell with its original value. Otherwise, increment the count of cells that have been removed. 
-5. Print the board to stdin for the user. 
-6. Free all memory. 
-
-<hr>
-
-**Solve** is implemented by passing in an incomplete **sudoku_board** struct, then solving the board by filling in empty cells and backtracking whenever an inserted value is not valid, done recursively until the board is fully populated. The board is then printed for the user. 
-
-1. Load in a board. 
-2. Pass the board to the solver. First check whether the board has a unique solution. If the board has a unique solution, return 1. Else, return 0 for no solutions or for more than one solution. 
-3. Go through the board one cell at a time and fill in empty ones recursively. Use recursive helper `solveBoardHelper` which, starting from a value of 1, inserts a value into a empty cell. If the value added is already seen board's its row, column, or 3x3 grid, or if a recursive call of solveBoardHelper from the next empty cell does not yield a solved board, change the value of the number inserted and try again. 
-4. If the board is unique with one solution, print the solved puzzle to stdout, else print error and exit.
-5. Delete the board. 
-
 
 ### Error Handling
 We implement the following error checks: 

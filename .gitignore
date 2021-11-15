@@ -1,0 +1,6 @@
+*.o
+fuzztest
+*core*
+.nfs*
+sudoku
+sudokuTopping
