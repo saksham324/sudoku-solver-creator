@@ -250,3 +250,53 @@ void normalizeWord(char *s) {
         }
     }
 }
+
+/************* UNIT_TESTING ***************/
+/* create an sudoku board, verify some functions in common.c, and their outputs.*/
+
+#ifdef UNIT_TEST
+#include <stdbool.h>
+#include "../solver/solver.h"
+#include "../creator/creator.h"
+
+
+static int unit_tested = 0;
+static int unit_failed = 0;
+
+#define EXPECT(cond) { unit_expect((cond),__LINE__); }
+
+void unit_expect(bool condition, int line){
+    unit_tested++;
+
+    if (condition){
+        printf("%d PASSED at %d", unit_tested, line);
+    }
+    else{
+        printf("%d FAILED at %d", unit_tested, line);
+        unit_failed++;
+    }
+}
+
+int main(){
+
+    sudoku_board_t* board = generateEmptyBoard();
+    EXPECT(board != NULL);
+    EXPECT(deleteBoard(board) == true);
+
+    sudoku_board_t* board1 = generateEmptyBoard();
+    EXPECT(board != NULL);
+    EXPECT(isUnique(board1) == 2);
+    EXPECT(deleteBoard(board) == true);
+
+    EXPECT(isValidMode("create") == true);
+    EXPECT(isValidMode("solve") == true);
+    EXPECT(isValidMode("creae") == false);
+    EXPECT(isValidMode("sove") == false);
+
+    EXPECT(isValidDifficulty("create") == false);
+    EXPECT(isValidDifficulty("easy") == true);
+    EXPECT(isValidDifficulty("hard") == true);
+
+}
+
+#endif // UNIT_TEST

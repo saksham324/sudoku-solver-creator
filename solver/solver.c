@@ -122,3 +122,45 @@ solveBoardHelper(sudoku_board_t* b, int pos)
 
     return true;
 }
+
+/************* UNIT_TESTING ***************/
+/* create an sudoku board, verify some functions in solver.c, and their outputs.*/
+
+#ifdef UNIT_TEST
+#include <stdbool.h>
+
+static int unit_tested = 0;
+static int unit_failed = 0;
+
+#define EXPECT(cond) { unit_expect((cond),__LINE__); }
+
+void unit_expect(bool condition, int line){
+    unit_tested++;
+
+    if (condition){
+        printf("%d PASSED at %d", unit_tested, line);
+    }
+    else{
+        printf("%d FAILED at %d", unit_tested, line);
+        unit_failed++;
+    }
+}
+
+int main(){
+    FILE* testboard = fopen("test.out", "r");
+    FILE* testboard1 = fopen("test2.out", "r");
+
+    sudoku_board_t* board = loadBoard(testboard);
+    sudoku_board_t* board2 = loadBoard(testboard1);
+
+    EXPECT(board != NULL);
+
+    EXPECT(solveBoard(board) == 1);
+    EXPECT(solveBoardHelper(board2, 0) == true);
+
+    deleteBoard(board);
+    deleteBoard(board2);
+   
+}
+
+#endif // UNIT_TEST

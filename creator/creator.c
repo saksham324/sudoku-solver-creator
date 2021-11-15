@@ -129,3 +129,40 @@ generateRandomGrid(sudoku_board_t *b, int rowStart, int colStart)
   }
   return; 
 }
+
+/************* UNIT_TESTING ***************/
+/* create an sudoku board, verify some functions in creator.c, and their outputs.*/
+
+#ifdef UNIT_TEST
+#include <stdbool.h>
+
+static int unit_tested = 0;
+static int unit_failed = 0;
+
+#define EXPECT(cond) { unit_expect((cond),__LINE__); }
+
+void unit_expect(bool condition, int line){
+    unit_tested++;
+
+    if (condition){
+        printf("%d PASSED at %d", unit_tested, line);
+    }
+    else{
+        printf("%d FAILED at %d", unit_tested, line);
+        unit_failed++;
+    }
+}
+
+int main(){
+    sudoku_board_t* board = generateEmptyBoard();
+    EXPECT(board != NULL);
+  
+    EXPECT(fillBoard(board) == true);
+
+    EXPECT(removeNumbers(board, 10) == true);
+    deleteBoard(board);
+   
+}
+
+
+#endif // UNIT_TEST
