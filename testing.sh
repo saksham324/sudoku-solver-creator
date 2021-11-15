@@ -49,5 +49,5 @@
 
 # valgrind for memory leak check
 valgrind --leak-check=full --show-leak-kinds=all ./sudoku create easy 
-valgrind --leak-check=full --show-leak-kinds=all ./suoku create hard 
+valgrind --leak-check=full --show-leak-kinds=all ./sudoku create hard 
 valgrind --leak-check=full --show-leak-kinds=all ./sudoku solve < test.out

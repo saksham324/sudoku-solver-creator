@@ -26,34 +26,34 @@ Command must be either `solve` or `create`
 ./sudoku create easy
 
 -------------------------
-| 4 0 0 | 0 0 6 | 0 0 0 | 
-| 0 5 0 | 2 3 0 | 4 0 0 | 
-| 9 0 0 | 4 7 8 | 0 3 0 | 
+| 1 3 2 | 0 0 7 | 0 0 8 | 
+| 0 7 0 | 0 8 9 | 1 0 0 | 
+| 0 6 0 | 0 3 1 | 0 0 0 | 
 -------------------------
-| 0 6 3 | 0 0 1 | 9 4 0 | 
-| 0 0 0 | 0 2 3 | 6 0 0 | 
-| 0 0 0 | 6 0 4 | 5 2 0 | 
+| 4 0 7 | 8 2 0 | 9 0 1 | 
+| 0 0 6 | 1 9 0 | 0 3 0 | 
+| 3 0 9 | 4 0 6 | 5 0 0 | 
 -------------------------
-| 8 9 0 | 3 6 0 | 1 0 0 | 
-| 0 0 1 | 9 4 5 | 8 0 6 | 
-| 0 0 0 | 0 1 2 | 0 0 4 | 
+| 7 0 0 | 0 0 2 | 0 4 0 | 
+| 6 0 0 | 0 1 0 | 0 5 0 | 
+| 8 0 5 | 0 0 4 | 0 0 7 | 
 -------------------------
 
 # create at level 2
 ./sudoku create hard
 
 -------------------------
-| 4 0 0 | 0 0 6 | 0 0 0 | 
-| 0 5 0 | 2 3 0 | 4 0 0 | 
-| 9 0 0 | 0 7 0 | 0 3 0 | 
+| 1 0 2 | 0 0 7 | 0 0 8 | 
+| 0 0 0 | 0 8 0 | 1 0 0 | 
+| 0 6 0 | 0 3 0 | 0 0 0 | 
 -------------------------
-| 0 0 3 | 0 0 1 | 9 4 0 | 
-| 0 0 0 | 0 2 0 | 0 0 0 | 
-| 0 0 0 | 6 0 4 | 5 0 0 | 
+| 4 0 7 | 0 2 0 | 9 0 1 | 
+| 0 0 0 | 1 9 0 | 0 3 0 | 
+| 0 0 9 | 4 0 6 | 0 0 0 | 
 -------------------------
-| 0 9 0 | 3 0 0 | 0 0 0 | 
-| 0 0 1 | 0 0 5 | 8 0 0 | 
-| 0 0 0 | 0 1 2 | 0 0 4 | 
+| 0 0 0 | 0 0 2 | 0 0 0 | 
+| 6 0 0 | 0 0 0 | 0 5 0 | 
+| 8 0 0 | 0 0 4 | 0 0 7 | 
 -------------------------
 
 # create outside easy or hard
@@ -133,42 +133,69 @@ Passed 250/250 tests!
 
 # valgrind for memory leak check
 valgrind --leak-check=full --show-leak-kinds=all ./sudoku create easy 
-==13718== Memcheck, a memory error detector
-==13718== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==13718== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==13718== Command: ./sudoku create easy
-==13718== 
+==34505== Memcheck, a memory error detector
+==34505== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==34505== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==34505== Command: ./sudoku create easy
+==34505== 
 
 -------------------------
-| 0 0 0 | 2 0 0 | 0 8 5 | 
-| 0 3 0 | 4 0 0 | 0 2 9 | 
-| 0 0 0 | 5 6 0 | 0 4 0 | 
+| 0 7 5 | 2 0 0 | 6 0 0 | 
+| 8 2 3 | 0 0 6 | 1 0 0 | 
+| 0 0 9 | 0 0 7 | 2 0 0 | 
 -------------------------
-| 0 5 0 | 0 9 0 | 8 0 0 | 
-| 0 7 0 | 1 0 8 | 5 6 2 | 
-| 2 0 8 | 7 0 0 | 0 0 3 | 
+| 3 9 1 | 0 0 4 | 5 0 0 | 
+| 0 0 0 | 8 5 9 | 3 1 0 | 
+| 6 0 0 | 3 2 0 | 7 9 0 | 
 -------------------------
-| 6 0 0 | 3 7 1 | 0 9 8 | 
-| 3 8 1 | 0 2 4 | 7 0 0 | 
-| 0 0 4 | 0 0 0 | 2 0 0 | 
+| 0 0 0 | 0 6 0 | 9 0 7 | 
+| 0 3 0 | 7 8 2 | 0 5 0 | 
+| 0 0 0 | 0 4 3 | 0 0 0 | 
 -------------------------
-==13718== 
-==13718== HEAP SUMMARY:
-==13718==     in use at exit: 0 bytes in 0 blocks
-==13718==   total heap usage: 14 allocs, 14 frees, 17,348 bytes allocated
-==13718== 
-==13718== All heap blocks were freed -- no leaks are possible
-==13718== 
-==13718== For counts of detected and suppressed errors, rerun with: -v
-==13718== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
-valgrind --leak-check=full --show-leak-kinds=all ./suoku create hard 
-valgrind: ./suoku: No such file or directory
+==34505== 
+==34505== HEAP SUMMARY:
+==34505==     in use at exit: 0 bytes in 0 blocks
+==34505==   total heap usage: 14 allocs, 14 frees, 17,348 bytes allocated
+==34505== 
+==34505== All heap blocks were freed -- no leaks are possible
+==34505== 
+==34505== For counts of detected and suppressed errors, rerun with: -v
+==34505== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+valgrind --leak-check=full --show-leak-kinds=all ./sudoku create hard 
+==34540== Memcheck, a memory error detector
+==34540== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==34540== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==34540== Command: ./sudoku create hard
+==34540== 
+
+-------------------------
+| 0 7 5 | 0 0 0 | 0 0 0 | 
+| 0 2 0 | 0 0 6 | 1 0 0 | 
+| 0 0 9 | 0 0 0 | 2 0 0 | 
+-------------------------
+| 3 9 1 | 0 0 0 | 5 0 0 | 
+| 0 0 0 | 8 0 0 | 3 0 0 | 
+| 6 0 0 | 0 2 0 | 7 9 0 | 
+-------------------------
+| 0 0 0 | 0 6 0 | 9 0 7 | 
+| 0 0 0 | 0 8 2 | 0 5 0 | 
+| 0 0 0 | 0 4 3 | 0 0 0 | 
+-------------------------
+==34540== 
+==34540== HEAP SUMMARY:
+==34540==     in use at exit: 0 bytes in 0 blocks
+==34540==   total heap usage: 14 allocs, 14 frees, 17,348 bytes allocated
+==34540== 
+==34540== All heap blocks were freed -- no leaks are possible
+==34540== 
+==34540== For counts of detected and suppressed errors, rerun with: -v
+==34540== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 valgrind --leak-check=full --show-leak-kinds=all ./sudoku solve < test.out
-==13747== Memcheck, a memory error detector
-==13747== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==13747== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
-==13747== Command: ./sudoku solve
-==13747== 
+==34592== Memcheck, a memory error detector
+==34592== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==34592== Using Valgrind-3.13.0 and LibVEX; rerun with -h for copyright info
+==34592== Command: ./sudoku solve
+==34592== 
 
 
 -------------------------
@@ -184,12 +211,12 @@ valgrind --leak-check=full --show-leak-kinds=all ./sudoku solve < test.out
 | 7 1 8 | 6 3 2 | 4 9 5 | 
 | 4 6 5 | 9 7 1 | 3 8 2 | 
 -------------------------
-==13747== 
-==13747== HEAP SUMMARY:
-==13747==     in use at exit: 0 bytes in 0 blocks
-==13747==   total heap usage: 15 allocs, 15 frees, 25,540 bytes allocated
-==13747== 
-==13747== All heap blocks were freed -- no leaks are possible
-==13747== 
-==13747== For counts of detected and suppressed errors, rerun with: -v
-==13747== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==34592== 
+==34592== HEAP SUMMARY:
+==34592==     in use at exit: 0 bytes in 0 blocks
+==34592==   total heap usage: 15 allocs, 15 frees, 25,540 bytes allocated
+==34592== 
+==34592== All heap blocks were freed -- no leaks are possible
+==34592== 
+==34592== For counts of detected and suppressed errors, rerun with: -v
+==34592== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
