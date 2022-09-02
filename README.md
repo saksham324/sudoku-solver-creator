@@ -71,3 +71,5 @@ where the user will interact with the program directly on the terminal, based on
 The `testing.sh` program is a script that contains input errors and edge cases to test the robustness of this module and contains detailed information on how the test cases were build. More information in the test cases run, read the `TESTING.md` file.
 * The program passed all the test cases.
 * No memory leaks were found using the `valgrind`. 
+
+Disclaimer : This program was made as a class project for COSC 50 : Software Design & Implementation at Dartmouth College during Fall 2021. If you are currently enrolled in this class, or planning to be kindly refrain from using this repository in any way. [Link to the Dartmouth Honor Principle](https://student-affairs.dartmouth.edu/policy/academic-honor-principle)
